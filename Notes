@@ -1,0 +1,30 @@
+*Listener*
+Um "ouvinte de evento" (ou "event listener" em inglês) é uma função que espera por um evento específico acontecer em um elemento HTML. Quando esse evento ocorre, a função é chamada/executada.
+
+No contexto do navegador, por exemplo, quando um usuário clica em um botão, pressiona uma tecla do teclado ou envia um formulário, esses são eventos. O ouvinte de evento é responsável por detectar esses eventos e lidar com eles de acordo com a lógica definida na função associada.
+
+No código que você mostrou, this.formulario.addEventListener('submit', ..., o ouvinte de evento está esperando pelo evento de submissão do formulário (submit). Quando o formulário é submetido, a função associada será chamada para lidar com esse evento.
+
+
+
+*CallBack*
+Uma "callback" é uma função que é passada como argumento para outra função e é executada dentro dessa função principal em algum ponto específico do seu fluxo de execução.
+
+Em linguagens de programação como JavaScript, as callbacks são comumente usadas para lidar com operações assíncronas, como requisições de rede, temporizadores e eventos de usuário. Em essência, uma callback permite que você especifique o que deve acontecer depois que uma determinada operação for concluída.
+
+Por exemplo, quando você está fazendo uma requisição AJAX em JavaScript, você geralmente passa uma função callback para ser executada quando os dados da requisição estiverem disponíveis. Isso permite que você escreva código que continua a funcionar normalmente enquanto espera pela resposta da requisição.
+
+No código que você mostrou, e => { this.handleSubmit(e); }, a função de flecha (e => {...}) é uma callback. Ela é passada como argumento para o método addEventListener() e será chamada quando o evento de submissão do formulário ocorrer.
+
+
+
+*DOM*
+DOM significa "Document Object Model" (Modelo de Objeto de Documento, em português) e é uma interface de programação para documentos HTML e XML.
+
+O DOM representa a estrutura de um documento como uma árvore de objetos, onde cada nó é um objeto representando uma parte do documento, como elementos HTML, atributos, texto, etc. Esses objetos podem ser manipulados através de linguagens de programação, como JavaScript, para alterar dinamicamente o conteúdo, a estrutura e o estilo de uma página web.
+
+Em resumo, o DOM é uma representação programática da estrutura de um documento HTML/XML, que permite aos desenvolvedores acessar, modificar e manipular os elementos de uma página web através de código.
+
+
+
+
