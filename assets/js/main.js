@@ -37,30 +37,65 @@ class ValidaFormulário{
         que geralmente é atualizar a página. Isso significa que a página não será recarregada quando 
         o formulário for submetido.*/
 
-       const CamposValidos = this.CamposValidos();
+       const camposValidos = this.camposValidos();
        /*está sendo chamada uma função chamada CamposValidos() para verificar se os campos do formulário 
        são válidos. O resultado dessa verificação é armazenado na variável CamposValidos. */
+
+       const senhasValidas = this.senhasValidas();
+
+
+        console.log(camposValidos)
+        console.log(senhasValidas)
+
+       if(camposValidos && senhasValidas){
+        alert('Formulário enviado');
+        this.formulario.submit();
+       }
     }
 
-    CamposValidos(){
+    senhasValidas(){
+        let valid = true;
+
+        const senha = this.formulario.querySelector('.senha');
+        const repetirSenha = this.formulario.querySelector('.repetir-senha');
+
+        if(senha.value !== repetirSenha.value){
+            valid = false;
+            this.criaErro(senha, 'Campos senha e repetir senha precisam ser iguais.');
+            this.criaErro(repetirSenha, 'Campos senha e repetir senha precisam ser iguais.');
+        }
+        if(senha.value.length < 6 || senha.value.length > 12){
+            valid = false;
+            this.criaErro(senha, 'Senha precisa estar entre 6 e 12 caracteres')
+        }
+
+
+        return valid;
+    }
+
+    camposValidos(){
         /*CamposValidos() responsável por verificar se os campos do formulário são válidos*/
 
         let valid = true;
         /* Inicializa uma variável valid como verdadeira. Essa variável 
         será usada para rastrear se todos os campos do formulário são válidos. */
         
+        for(let errorText of this.formulario.querySelectorAll('.error-text')){
+            errorText.remove();
+        }
+
         for(let campo of this.formulario.querySelectorAll('.validar')){
             /*Este loop for itera sobre todos os elementos do formulário que possuem a 
             classe 'validar'. Parece que esses elementos são os campos que precisam ser 
             validados. */
+            
+            const label = campo.previousElementSibling.innerText;
+            /*Aqui, está sendo obtido o texto do elemento anterior ao campo, presumivelmente 
+            um rótulo ou etiqueta, para ser usado na mensagem de erro.*/
 
             if(!campo.value) {
                 /*Dentro do loop, verifica se o valor do campo está vazio. Se estiver 
                 vazio, significa que o campo não foi preenchido. */
-
-                const label = campo.previousElementSibling.innerText;
-                /*Aqui, está sendo obtido o texto do elemento anterior ao campo, presumivelmente 
-                um rótulo ou etiqueta, para ser usado na mensagem de erro.*/
 
                 this.criaErro(campo, `Campo "${label}" não pode estar em branco.`)
                 /*Se o campo estiver vazio, esta linha chama uma função criaErro() para criar 
@@ -70,7 +105,43 @@ class ValidaFormulário{
                 valid = false;
                 /*Define a variável valid como falsa, indicando que pelo menos um campo não é válido. */
             }
+
+            if(campo.classList.contains('cpf')){
+                if(!this.validaCpf(campo)) valid = false;
+            }
+
+            if(campo.classList.contains('usuario')){
+                if(!this.validaUsuario(campo)) valid = false;
+            }
         }
+        return valid;
+    }
+
+    validaUsuario(campo){
+        const usuario = campo.value;
+        let valid = true;
+
+        if(usuario.length < 3 || usuario.length > 12){
+            this.criaErro(campo, 'Usuário precisa ter entre 6 e 12 caracteres')
+            valid = false;
+        }
+
+        if(!usuario.match(/^[a-zA-z0-9]+$/g)){
+            this.criaErro(campo, 'Usuário precisa conter apenas letras e/ou números')
+            valid = false;
+        }
+        return true;
+    }
+
+    validaCpf(campo){
+        const cpf = new ValidaCPF(campo.value);
+
+        if(!cpf.valida()){
+            this.criaErro(campo, 'CPF Inválido')
+            return false;
+        }
+
+        return true;
     }
 
     criaErro(campo,msg){
